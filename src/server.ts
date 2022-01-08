@@ -3,21 +3,25 @@ import { createConnection } from "typeorm";
 import express from "express";
 import morgan from "morgan";
 
+import authRoutes from "./routes/auth";
+
+import trim from "./middleware/trim";
+
 const app = express();
 
-//gonna use the json middleware so that i can pass json body requests
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(trim);
 
-// set up kinda a test route
-app.get("/", (req, res) => res.send("Hello World"));
+app.get("/", (_, res) => res.send("Hello World"));
+app.use("/api/auth", authRoutes);
 
 app.listen(5000, async () => {
   console.log("Server running at http://localhost:5000");
 
   try {
     await createConnection();
-    console.log("Database Connected!");
+    console.log("Database connected!");
   } catch (err) {
     console.log(err);
   }
