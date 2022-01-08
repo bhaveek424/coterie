@@ -1,7 +1,11 @@
 import { Request, Response, Router } from "express";
 import { isEmpty, validate } from "class-validator";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import cookie from "cookie";
+
 import { User } from "../entities/User";
+import auth from "../middleware/auth";
 
 const register = async (req: Request, res: Response) => {
   const { email, username, password } = req.body;
@@ -53,12 +57,51 @@ const login = async (req: Request, res: Response) => {
     if (!passwordMatch)
       return res.status(401).json({ password: "Password is incorrect" });
 
+    const token = jwt.sign({ username }, process.env.JWT_SECRET);
+
+    res.set(
+      "Set-Cookie",
+      cookie.serialize("token", token, {
+        // making httpOnly means that it can not be accessed by Js which makes it more secure
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 3600,
+        path: "/",
+      })
+    );
+
     return res.json(user);
   } catch (err) {}
+};
+
+// user can send the request to this route and it will tell the user if they are authenticated
+//so it will take the token and send back the user data
+const me = (_: Request, res: Response) => {
+  return res.json(res.locals.user);
+};
+
+const logout = (_: Request, res: Response) => {
+  // we can't just actually tell the client to delete the cookie that doesnt
+  // instead set a cookie with exact same name of the cookie and give it an empty value. give it an immidiate expiry time so browser deletes it
+  res.set(
+    "Set-Cookie",
+    cookie.serialize("token", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      expires: new Date(0),
+      path: "/",
+    })
+  );
+
+  return res.status(200).json({ success: true });
 };
 
 const router = Router();
 router.post("/register", register);
 router.post("/login", login);
+router.get("/me", auth, me); // if anything in auth fails, we will not reach here
+router.get("/logout", auth, logout);
 
 export default router;
