@@ -1,4 +1,3 @@
-import { IsEmail, Length } from "class-validator";
 import {
   PrimaryGeneratedColumn,
   BaseEntity,
@@ -13,7 +12,7 @@ export default abstract class Entity extends BaseEntity {
   id: number;
 
   @CreateDateColumn()
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
