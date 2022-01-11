@@ -30,10 +30,10 @@ export default function Home() {
   };
 
   return (
-    <div className="flex ">
+    <div className="flex bg-white">
       <Head>
         <title>Coterie: Login</title>
-        <link rel="icon" href="/coterie.svg" />
+        <link rel="icon" href="/images/coterie.svg" />
       </Head>
 
       <div
