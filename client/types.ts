@@ -9,4 +9,7 @@ export interface Post {
   username: string;
   //Virtual Fields
   url: string;
+  voteScore?: number;
+  commentCount?: number;
+  userVote?: number;
 }
