@@ -1,13 +1,14 @@
 export interface Post {
   identifier: string;
   title: string;
+  body?: string;
   slug: string;
   subName: string;
-  createdAt: string;
-  body?: string;
-  updatedAt: string;
   username: string;
-  //Virtual Fields
+  createdAt: string;
+  updatedAt: string;
+  sub?: Sub;
+  // Virtual fields
   url: string;
   voteScore?: number;
   commentCount?: number;
@@ -31,7 +32,70 @@ export interface Sub {
   bannerUrn: string;
   username: string;
   posts: Post[];
-  //virtuals
+  // Virtuals
   imageUrl: string;
   bannerUrl: string;
+  postCount?: number;
 }
+
+export interface Comment {
+  identifier: string;
+  body: string;
+  username: string;
+  createdAt: string;
+  updatedAt: string;
+  post?: Post;
+  // Virtuals
+  userVote: number;
+  voteScore: number;
+}
+
+// export interface Post {
+//   identifier: string;
+//   title: string;
+//   slug: string;
+//   subName: string;
+//   createdAt: string;
+//   body?: string;
+//   updatedAt: string;
+//   username: string;
+//   sub?: Sub
+//   //Virtual Fields
+//   url: string;
+//   voteScore?: number;
+//   commentCount?: number;
+//   userVote?: number;
+// }
+
+// export interface User {
+//   username: string;
+//   email: string;
+//   createdAt: string;
+//   updatedAt: string;
+// }
+
+// export interface Sub {
+//   createdAt: string;
+//   updatedAt: string;
+//   name: string;
+//   title: string;
+//   description: string;
+//   imageUrn: string;
+//   bannerUrn: string;
+//   username: string;
+//   posts: Post[];
+//   //virtuals
+//   imageUrl: string;
+//   bannerUrl: string;
+//   postCount?: number;
+// }
+// export interface Comment {
+//   identifier: string;
+//   body: string;
+//   username: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   // Virtuals
+//   userVote: number;
+//   voteScore: number;
+// }
