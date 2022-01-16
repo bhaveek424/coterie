@@ -42,5 +42,8 @@
     "client": "cd client && npm run dev",
     "dev": "concurrently \"npm run server\" \"npm run client\" --names server, client",
     "seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
+  },
+  "engines": {
+    "node": "16.13.x"
   }
 }
